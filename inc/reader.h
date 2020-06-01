@@ -13,8 +13,9 @@ namespace Otus {
 class Reader : public BaseObservable<Commands_t>
 {
 public: 
-  Reader(std::size_t a_szBlockSize) 
-    : m_szBlockSize(a_szBlockSize)
+  Reader(std::size_t a_szBlockSize, std::istream& a_isIn = std::cin) 
+    : m_isIn(a_isIn)
+    , m_szBlockSize(a_szBlockSize)
     , m_nBlockDepth(0)
   { }
 
@@ -23,7 +24,7 @@ public:
     m_vCommands.reserve(m_szBlockSize);
 
     std::string strLine;
-    while ( std::getline(std::cin, strLine) ) {
+    while ( std::getline(m_isIn, strLine) ) {
       if ( strLine == "{" ) {
         m_nBlockDepth++;
       } 
@@ -42,6 +43,7 @@ public:
   }
 
 private:
+  std::istream& m_isIn;
   std::size_t m_szBlockSize;
   std::size_t m_nBlockDepth;
   Commands_t m_vCommands;  
