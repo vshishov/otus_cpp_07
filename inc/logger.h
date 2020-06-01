@@ -24,7 +24,7 @@ public:
     std::string strLogName{"bulk" + a_Commands.begin()->GetTimeStamp() + ".log"};
     std::ofstream log(strLogName, std::ios::out);
 
-    for (auto command_it = a_Commands.begin(); command_it != a_Commands.cend(); ++command_it) {
+    for (auto command_it = a_Commands.begin(); command_it != a_Commands.end(); ++command_it) {
       if (command_it != a_Commands.begin()) {
         log << ", ";
       }
