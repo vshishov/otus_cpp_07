@@ -6,36 +6,39 @@
 
 namespace Otus {
 
+template<typename T>
 class IObserver 
 {
 public:
   virtual ~IObserver() = default;
 
-  virtual void Update() = 0;
+  virtual void Update(const T&) = 0;
 };
 
+template<typename T>
 class IObservable 
 {
 public:
   virtual ~IObservable() = default;
 
-  virtual void Subscribe(const std::shared_ptr<IObserver>& a_ptrObserver) = 0;
+  virtual void Subscribe(const std::shared_ptr< IObserver<T> >& a_ptrObserver) = 0;
 };
 
-class BaseObservable : public IObservable 
+template<typename T>
+class BaseObservable : public IObservable<T> 
 {
 public:
-  void Subscribe(const std::shared_ptr<IObserver>& a_ptrObserver) override
+  void Subscribe(const std::shared_ptr< IObserver<T> >& a_ptrObserver) override
   {
     m_subscribers.emplace_back(a_ptrObserver);
   }
 
-  void Notify() {
+  void Notify(const T& a_data) {
     auto iter = m_subscribers.begin();
     while (iter != m_subscribers.end()) {
       auto ptr = iter->lock();
       if (ptr) {
-          ptr->Update();
+          ptr->Update(a_data);
           ++iter;
       } else {
           m_subscribers.erase(iter++);
@@ -44,7 +47,7 @@ public:
   }
 
 private:
-  std::list< std::weak_ptr<IObserver> > m_subscribers;
+  std::list< std::weak_ptr<IObserver<T> > > m_subscribers;
 };
 
 } // Otus::

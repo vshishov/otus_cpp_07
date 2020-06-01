@@ -5,34 +5,38 @@
 #include "reader.h"
 
 #include <memory>
+#include <fstream>
 
 namespace Otus {
 
-class Excuter : public IObserver<Commands_t>, public std::enable_shared_from_this<Excuter>
+class Logger : public IObserver<Commands_t>, public std::enable_shared_from_this<Logger>
 {
 public:
-  static std::shared_ptr<Excuter> Create(std::shared_ptr<Reader>& a_pReader)
+  static std::shared_ptr<Logger> Create(std::shared_ptr<Reader>& a_pReader)
   {
-    auto ptr = std::shared_ptr<Excuter>{new Excuter{}};
+    auto ptr = std::shared_ptr<Logger>{new Logger{}};
     ptr->SetReader(a_pReader);
     return ptr;
   }
 
   void Update(const Commands_t& a_Commands) override 
   {
-    std::cout << "bulk: ";
+    std::string strLogName{"bulk" + a_Commands.begin()->GetTimeStamp() + ".log"};
+    std::ofstream log(strLogName, std::ios::out);
+
     for (auto command_it = a_Commands.begin(); command_it != a_Commands.cend(); ++command_it) {
       if (command_it != a_Commands.begin()) {
-        std::cout << ", ";
+        log << ", ";
       }
-      std::cout << command_it->GetName();
+      log << command_it->GetName();
       
     }
-    std::cout << std::endl;
+    log << std::endl;
+    log.close();
   }
 
 private:
-  Excuter() {}
+  Logger() {}
 
   void SetReader(std::shared_ptr<Reader>& a_pReader)
   {
