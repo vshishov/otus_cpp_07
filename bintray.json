@@ -6,14 +6,14 @@
   },
 
   "version": {
-    "name": "0.0",
+    "name": "bulk",
     "gpgSign": false
   },
 
   "files": [
     {
       "includePattern": "\./(.*\.deb)",
-      "uploadPattern": "bulk/$1",
+      "uploadPattern": "$1",
       "matrixParams": {
         "deb_distribution": "bionic",
         "deb_component": "main",
