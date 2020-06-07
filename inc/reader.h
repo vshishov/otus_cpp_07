@@ -26,6 +26,9 @@ public:
     std::string strLine;
     while ( std::getline(m_isIn, strLine) ) {
       if ( strLine == "{" ) {
+        if (m_nBlockDepth == 0) {
+          Flush();
+        }
         m_nBlockDepth++;
       } 
       else if ( strLine == "}" ) {
@@ -36,9 +39,16 @@ public:
       }
 
       if (!m_nBlockDepth && m_vCommands.size() >= m_szBlockSize) {
-        Notify(m_vCommands);
-        m_vCommands.clear();
+        Flush();
       }
+    }
+  }
+
+  void Flush() 
+  {
+    if (m_vCommands.size() > 0) {
+      Notify(m_vCommands);
+      m_vCommands.clear();
     }
   }
 
