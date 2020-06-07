@@ -1,6 +1,3 @@
-
-
-
 #include "reader.h"
 #include "executer.h"
 
