@@ -12,9 +12,9 @@ int main(int argc, const char** argv)
     return 1;
   }
 
-  std::size_t szBlockSize{0};
+  long lBlockSize{0};
   try {
-    szBlockSize = std::stoi(argv[1]);
+    lBlockSize = std::stoi(argv[1]);
   }
   catch (const std::invalid_argument& ex) {
     std::cerr << "Error: Block size is incorrect!" << std::endl;
@@ -25,12 +25,17 @@ int main(int argc, const char** argv)
     return 1;
   }
 
-  if (szBlockSize == 0) {
+  if (lBlockSize == 1) {
     std::cerr << "Error: Block size must be greater then zero!" << std::endl;
     return 1;
   }
 
-  auto pReader = std::make_shared<Otus::Reader>(szBlockSize);
+  if (lBlockSize < 0) {
+    std::cerr << "Error: Block size must not be negative!" << std::endl;
+    return 1;
+  }
+
+  auto pReader = std::make_shared<Otus::Reader>(static_cast<std::size_t>(lBlockSize));
   auto pExecuter = Otus::Excuter::Create(pReader);
   auto pLogger = Otus::Logger::Create(pReader);
   pReader->Exec();
