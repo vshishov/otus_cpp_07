@@ -61,6 +61,27 @@ TEST(bulk_blocks, single_block) {
   auto pReader = std::make_shared<Otus::Reader>(static_cast<std::size_t>(3), ssTestIn);
   auto pExecuter = Otus::Excuter::Create(pReader, ssTestOut);
 
+  ssTestIn << "{" << std::endl
+    << "cmd1" << std::endl
+    << "cmd2" << std::endl
+    << "cmd3" << std::endl
+    << "cmd4" << std::endl
+    << "cmd5" << std::endl
+    << "}" << std::endl
+  ;
+
+  pReader->Exec();
+
+  ASSERT_EQ(ssTestOut.str(), "bulk: cmd1, cmd2, cmd3, cmd4, cmd5\n");
+}
+
+TEST(bulk_blocks, single_block_in_default_block) { 
+  std::stringstream ssTestIn { };
+  std::stringstream ssTestOut { };
+
+  auto pReader = std::make_shared<Otus::Reader>(static_cast<std::size_t>(3), ssTestIn);
+  auto pExecuter = Otus::Excuter::Create(pReader, ssTestOut);
+
   ssTestIn << "cmd1" << std::endl
     << "cmd2" << std::endl
     << "{" << std::endl
