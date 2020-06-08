@@ -160,3 +160,18 @@ TEST(bulk_blocks, not_complete) {
 
   ASSERT_EQ(ssTestOut.str(), "bulk: cmd1, cmd2\n");
 }
+
+TEST(bulk_blocks, not_correct_sequence) { 
+  std::stringstream ssTestIn;
+  std::stringstream ssTestOut;
+
+  auto pReader = std::make_shared<Otus::Reader>(static_cast<std::size_t>(3), ssTestIn);
+  auto pExecuter = Otus::Excuter::Create(pReader, ssTestOut);
+
+  ssTestIn << "cmd1" << std::endl
+    << "cmd2" << std::endl
+    << "}" << std::endl
+  ;
+
+  ASSERT_THROW(pReader->Exec(), std::logic_error);
+}
