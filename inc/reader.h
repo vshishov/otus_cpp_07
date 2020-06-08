@@ -32,6 +32,9 @@ public:
         m_nBlockDepth++;
       } 
       else if ( strLine == "}" ) {
+        if (m_nBlockDepth == 0) {
+          throw std::logic_error("unexpected symbol '}'");
+        }
         m_nBlockDepth--;
       }
       else {
