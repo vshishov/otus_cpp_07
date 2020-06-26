@@ -35,7 +35,7 @@ int main(int argc, const char** argv)
     return 1;
   }
 
-  auto pReader = std::make_shared<Otus::Reader>(static_cast<std::size_t>(lBlockSize));
+  auto pReader = Otus::Reader::Create(static_cast<std::size_t>(lBlockSize));
   auto pExecuter = Otus::Excuter::Create(pReader);
   auto pLogger = Otus::Logger::Create(pReader);
   pReader->Exec();

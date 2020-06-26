@@ -11,7 +11,7 @@ TEST(bulk_simple, empty_stream) {
   std::stringstream ssTestIn;
   std::stringstream ssTestOut;
 
-  auto pReader = std::make_shared<Otus::Reader>(2, ssTestIn);
+  auto pReader = Otus::Reader::Create(2, ssTestIn);
   auto pExecuter = Otus::Excuter::Create(pReader, ssTestOut);
 
   pReader->Exec();
@@ -23,7 +23,7 @@ TEST(bulk_simple, not_empty_stream) {
   std::stringstream ssTestIn;
   std::stringstream ssTestOut;
 
-  auto pReader = std::make_shared<Otus::Reader>(3, ssTestIn);
+  auto pReader = Otus::Reader::Create(3, ssTestIn);
   auto pExecuter = Otus::Excuter::Create(pReader, ssTestOut);
 
   ssTestIn << "cmd1" << std::endl
@@ -41,7 +41,7 @@ TEST(bulk_simple, not_complete) {
   std::stringstream ssTestOut;
 
   {
-    auto pReader = std::make_shared<Otus::Reader>(3, ssTestIn);
+    auto pReader = Otus::Reader::Create(3, ssTestIn);
     auto pExecuter = Otus::Excuter::Create(pReader, ssTestOut);
 
     ssTestIn << "cmd1" << std::endl
@@ -58,7 +58,7 @@ TEST(bulk_blocks, single_block) {
   std::stringstream ssTestIn;
   std::stringstream ssTestOut;
 
-  auto pReader = std::make_shared<Otus::Reader>(3, ssTestIn);
+  auto pReader = Otus::Reader::Create(3, ssTestIn);
   auto pExecuter = Otus::Excuter::Create(pReader, ssTestOut);
 
   ssTestIn << "{" << std::endl
@@ -79,7 +79,7 @@ TEST(bulk_blocks, single_block_in_default_block) {
   std::stringstream ssTestIn;
   std::stringstream ssTestOut;
 
-  auto pReader = std::make_shared<Otus::Reader>(3, ssTestIn);
+  auto pReader = Otus::Reader::Create(3, ssTestIn);
   auto pExecuter = Otus::Excuter::Create(pReader, ssTestOut);
 
   ssTestIn << "cmd1" << std::endl
@@ -102,7 +102,7 @@ TEST(bulk_blocks, multi_block) {
   std::stringstream ssTestIn;
   std::stringstream ssTestOut;
 
-  auto pReader = std::make_shared<Otus::Reader>(3, ssTestIn);
+  auto pReader = Otus::Reader::Create(3, ssTestIn);
   auto pExecuter = Otus::Excuter::Create(pReader, ssTestOut);
 
   ssTestIn << "cmd1" << std::endl
@@ -135,7 +135,7 @@ TEST(bulk_blocks, not_complete) {
   std::stringstream ssTestIn;
   std::stringstream ssTestOut;
   {
-    auto pReader = std::make_shared<Otus::Reader>(3, ssTestIn);
+    auto pReader = Otus::Reader::Create(3, ssTestIn);
     auto pExecuter = Otus::Excuter::Create(pReader, ssTestOut);
 
     ssTestIn << "cmd1" << std::endl
@@ -165,7 +165,7 @@ TEST(bulk_blocks, not_correct_sequence) {
   std::stringstream ssTestIn;
   std::stringstream ssTestOut;
 
-  auto pReader = std::make_shared<Otus::Reader>(3, ssTestIn);
+  auto pReader = Otus::Reader::Create(3, ssTestIn);
   auto pExecuter = Otus::Excuter::Create(pReader, ssTestOut);
 
   ssTestIn << "cmd1" << std::endl

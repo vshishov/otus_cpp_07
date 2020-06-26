@@ -13,11 +13,11 @@ namespace Otus {
 class Reader : public BaseObservable<Commands_t>
 {
 public: 
-  Reader(std::size_t a_szBlockSize, std::istream& a_isIn = std::cin) 
-    : m_isIn(a_isIn)
-    , m_szBlockSize(a_szBlockSize)
-    , m_nBlockDepth(0)
-  { }
+  static std::shared_ptr<Reader> Create(std::size_t a_szBlockSize, std::istream& a_isIn = std::cin)
+  {
+    auto ptr = std::shared_ptr<Reader>{ new Reader{a_szBlockSize, a_isIn} };
+    return ptr;
+  }
 
   void Exec()
   {
@@ -47,6 +47,13 @@ public:
     }
   }
 
+private:
+  Reader(std::size_t a_szBlockSize, std::istream& a_isIn = std::cin) 
+    : m_isIn(a_isIn)
+    , m_szBlockSize(a_szBlockSize)
+    , m_nBlockDepth(0)
+  { }
+
   void Flush() 
   {
     if (m_vCommands.size() > 0) {
@@ -54,6 +61,7 @@ public:
       m_vCommands.clear();
     }
   }
+
 
 private:
   std::istream& m_isIn;
